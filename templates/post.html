@@ -1,0 +1,95 @@
+
+
+{% block content %}
+{% include 'header.html' %}
+<!-- Page Header-->
+
+<header class="masthead" style="background-image: url('{{ post.img_url }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-heading">
+                    <h1>{{ post.title }}</h1>
+                    <h2 class="subheading">{{ post.subtitle }}</h2>
+                    <span class="meta">
+                        Posted by
+                        <a href="#">{{ post.author.name }}</a>
+                        on {{ post.date }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Post Content-->
+<!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+
+            {{ post.body|safe }}
+          <hr>
+           <div class="d-flex justify-content-end mb-4">
+             {% if current_user.id == 1: %}
+             <a  class="btn btn-primary text-uppercase" href="{{ url_for('edit_post', id=post.id) }}">Edit Post</a>
+             {% endif %}
+           </div>
+            <form action="" method="POST" id="contactForm" data-sb-form-api-token="API_TOKEN">
+                {% if current_user.id != 1: %}
+                    {{ form.comment_box }}
+                    {{ ckeditor.load() }}
+                    {{ ckeditor.config(name='comment_box') }}
+                    <br>
+                    {{ form.submit(class_='btn btn-primary') }}
+                {% endif %}
+            </form>
+            {% include 'comment.html' %}
+            <br>
+                    <h2 id="comment-title">Post Comments</h2>
+            <br>
+                    {% for comment in post.comments %}
+                    {% if post.id == comment.post_id %}
+                    <link href="{{ url_for('static', filename='css/comboxs.css') }}" rel="stylesheet" />
+                    <table>
+                        <tr>
+                            <td>
+                                    <div class="container mt-5 mb-5">
+                                <div class="row d-flex justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="comment-section">
+                                            <div class="card p-3 border-blue">
+                                                <div class="d-flex justify-content-between mt-2">
+                                                    <div class="d-flex flex-row">
+                                                        <div class="user-image"> <img src="https://source.unsplash.com/random/200x200?sig={{comment.author.id}}" width="40" class="rounded-circle"> </div>
+                                                        <div class="d-flex flex-column">
+                                                            <h6 class="mb-0">{{comment.author.name.split(" ")[0]}}</h6>  <span class="date">{{new_date}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div> <span>Resolve</span> </div>
+                                                </div>
+                                                <p class="content">{{ comment.text|safe }} Please hit the comment box with you tip and experience!</p>
+                                            </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                 {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+            <br>
+            </div>
+          </div>
+         </div>
+      </div>
+     </article>
+
+{% include 'footer.html' %}
+{% endblock %}

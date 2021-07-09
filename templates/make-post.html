@@ -1,0 +1,88 @@
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+  {% include "header.html" %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='assets/img/clay-banks-b5S4FrJb7yQ-unsplash.jpg')}}')">
+                <div class="container position-relative px-4 px-lg-5">
+                    <div class="row gx-4 gx-lg-5 justify-content-center">
+                        <div class="col-md-10 col-lg-8 col-xl-7">
+                            <div class="page-heading">
+                                <h1>{{ text }}</h1>
+                                <span class="subheading">You are going to make great blog post!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </header>
+
+   <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="my-5">
+
+                            <form action="" method="POST" id="contactForm" data-sb-form-api-token="API_TOKEN">
+                                <div class="form-floating">
+                                    {{ form.title.label}}
+                                    <br>
+                                    {{ form.title(class_='form-control') }}
+                                </div>
+                                <div class="form-floating">
+                                    {{ form.subtitle.label}}
+                                    <br>
+                                    {{ form.subtitle(class_='form-control') }}
+                                </div>
+<!--                                <div class="form-floating">-->
+<!--                                    {{ form.author.label}}-->
+<!--                                    <br>-->
+<!--                                    {{ form.author(class_='form-control') }}-->
+<!--                                </div>-->
+                                <div class="form-floating">
+                                    {{ form.img_url.label}}
+                                    <br>
+                                    {{ form.img_url(class_='form-control') }}
+                                </div>
+                                <div class="form-floating">
+                                    {{ form.body.label}}
+                                    <br>
+                                    <br>
+                                    <br>
+                                    {{ form.body }}
+                                    {{ ckeditor.load() }}
+                                    {{ ckeditor.config(name='body') }}
+                                </div>
+
+
+                                <br />
+                                <!-- Submit success message-->
+                                <!---->
+                                <!-- This is what your users will see when the form-->
+                                <!-- has successfully submitted-->
+                                <div class="d-none" id="submitSuccessMessage">
+                                    <div class="text-center mb-3">
+                                        <div class="fw-bolder">Form submission successful!</div>
+                                        To activate this form, sign up at
+                                        <br />
+                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                    </div>
+                                </div>
+                                <!-- Submit error message-->
+                                <!---->
+                                <!-- This is what your users will see when there is-->
+                                <!-- an error submitting the form-->
+                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                <!-- Submit Button-->
+                                 {{ form.submit(class_='btn btn-primary') }}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+{% include "footer.html" %}
+
+
+

@@ -1,0 +1,59 @@
+body {
+    background-color: #eee
+}
+
+.card {
+    margin: -10% -64%;
+    width: 100%;
+    border: none;
+    border-radius: 30px;
+    position: relative
+}
+
+@media screen and (max-width: 900px) {
+  .card {
+    margin: -10% 12%;
+    width: 73%;
+    border: none;
+    border-radius: 30px;
+    position: relative
+    }
+   .comment-title{
+     margin-left:10%
+   }
+}
+
+.border-blue {
+    border: 2px solid #41464b
+}
+
+.dots {
+    width: 15px;
+    height: 15px;
+    position: absolute;
+    background-color: #a19c9c;
+    border-radius: 50%;
+    top: 7px;
+    left: 7px
+}
+
+.user-image img {
+    margin-right: 8px
+}
+
+.date {
+    font-weight: 300;
+    font-size: 13px
+}
+
+.form-control {
+    box-shadow: none !important
+}
+
+.form-control:focus {
+    border: 1px solid blue
+}
+
+.content {
+    font-size: 14px
+}
