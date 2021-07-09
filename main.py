@@ -220,12 +220,13 @@ def about():
 
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
+    logged_in = current_user.is_authenticated 
     if request.method == "POST":
         data = request.form
         data = request.form
         send_email(data["name"], data["email"], data["phone"], data["message"])
-        return render_template("contact.html", msg_sent=True)
-    return render_template("contact.html", msg_sent=False)
+        return render_template("contact.html", msg_sent=True, logged_in=logged_in)
+    return render_template("contact.html", msg_sent=False, logged_in=logged_in)
 
 
 def send_email(name, email, phone, message):
