@@ -1,0 +1,125 @@
+{% include 'header.html' %}
+<header class="masthead" style="background-image: url('{{ url_for('static', filename = 'assets/img/forget_pass-bg.jpg') }}')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1> Password recovery </h1>
+                    <h2 class="subheading">Start contribution with our Blogs</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+ <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="my-5">
+
+                       {% if request == False: %}
+                        <form action="" method="POST" id="contactForm1" data-sb-form-api-token="API_TOKEN">
+                            {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                          <p style="color:red" class="{{ category }}">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                            <div class="form-floating">
+                                    {{ form.email.label}}
+                                    <br>
+                                    {{ form.email(class_='form-control') }}
+                                </div>
+                                <br>
+                                <div class="d-none" id="submitSuccessMessage">
+                                    <div class="text-center mb-3">
+                                        <div class="fw-bolder">Form submission successful!</div>
+                                        To activate this form, sign up at
+                                        <br />
+                                        <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
+                                    </div>
+                                </div>
+
+                                <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                       {{ form.submit(class_='btn btn-primary') }}
+                        </form>
+                        {% endif %}
+
+                            {% if request == True %}
+                            <form action="https://formsubmit.co/{{ email }}" method="POST" id="contactForm" data-sb-form-api-token="API_TOKEN">
+
+                                {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                          <p style="color:red" class="{{ category }}">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+                                <input type="hidden" name="_next" value="http://127.0.0.1:5000/new_password">
+                                <input class="form-control" id="name" name="Verification code" type="hidden" value="{{ random_code }}" placeholder="Enter your name..." data-sb-validations="required" />
+                                <div class="form-floating">
+                                    {{ form.name.label}}
+                                    <br>
+                                    {{ form.name(class_='form-control') }}
+                                </div>
+                                  <br>
+                                    {{ form.submit(class_='btn btn-primary') }}
+
+                            </form>
+                            {% endif %}
+
+                            {% if request == 3 %}
+                             <form action="" method="POST" id="contactForm3" data-sb-form-api-token="API_TOKEN">
+                                  {% with messages = get_flashed_messages(with_categories=true) %}
+                                    {% if messages %}
+                                        {% for category, message in messages %}
+                                          <p style="color:red" class="{{ category }}">{{ message }}</p>
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
+
+                               <div class="form-floating">
+                                    {{ form.code.label}}
+                                    <br>
+                                    {{ form.code(class_='form-control') }}
+                                </div>
+                                <br>
+                                 <br>
+
+
+                                 <h1>New Details Information</h1>
+                                 <br>
+
+                               <div class="form-floating">
+                                    {{ form.email.label}}
+                                    <br>
+                                    {{ form.email(class_='form-control') }}
+                                </div>
+                                 <br>
+                                 <div class="form-floating">
+                                    {{ form.new_email.label}}
+                                    <br>
+                                    {{ form.new_email(class_='form-control') }}
+                                </div>
+                                 <br>
+                                 <div class="form-floating">
+                                    {{ form.password.label}}
+                                    <br>
+                                    {{ form.password(class_='form-control') }}
+                                </div>
+                                <br>
+                                    {{ form.submit(class_='btn btn-primary') }}
+                             </form>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+
+
+
+{% include 'footer.html' %}
