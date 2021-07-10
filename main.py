@@ -102,7 +102,7 @@ class CommentForm(FlaskForm):
 class RecoveryForm(FlaskForm):
     email = EmailField('Email', validators=[DataRequired()])
     new_email = EmailField('New Email', validators=[DataRequired()])
-    code = IntegerField('Verification Code', validators=[DataRequired()])
+    code = PasswordField('Verification Code', validators=[DataRequired()])
     name = StringField('New UserName', validators=[DataRequired()])
     password = PasswordField('New Password', validators=[DataRequired()])
     con_password = PasswordField('confirm Password', validators=[DataRequired()])
