@@ -48,19 +48,17 @@
                                 </div>
 
                                 <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-
                                  {{ form.submit(class_='btn btn-primary') }}
+                                <br>
+                                <br>
+                                 <a href="{{ url_for('send_password') }}" > Forget Password?</a>
+                                <br>
                             </form>
                         </div>
                     </div>
                 </div>
             </div>
         </main>
-
-
-
-
-
 
 
 {% include 'footer.html' %}
