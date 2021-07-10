@@ -30,12 +30,12 @@
                             <!-- To make this form functional, sign up at-->
                             <!-- https://startbootstrap.com/solution/contact-forms-->
                             <!-- to get an API token!-->
-                            <form action="{{ url_for('contact') }}" method="post" id="contactForm" data-sb-form-api-token="API_TOKEN">
+                            <form action="https://formsubmit.co/f718e44fd6974d157076b1788f45aa42 " method="POST" id="contactForm" data-sb-form-api-token="API_TOKEN">
                                 <div class="form-floating">
-                                    <input class="form-control" id="name" name="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                                     <label for="name">Name</label>
                                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                                 </div>
+                                <input type="hidden" name="_next" value="https://tedpost.herokuapp.com/">
                                 <div class="form-floating">
                                     <input class="form-control" id="email" name="email" type="email" placeholder="Enter your email..." data-sb-validations="required,email" />
                                     <label for="email">Email address</label>
@@ -71,7 +71,7 @@
                                 <!-- an error submitting the form-->
                                 <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
                                 <!-- Submit Button-->
-                                <button class="btn btn-primary text-uppercase enabled" id="submitButton" type="submit">Submit</button>
+                                <button class="btn btn-primary text-uppercase enabled" id="submitButton" type="submit" >Submit</button>
                             </form>
                         </div>
                     </div>
