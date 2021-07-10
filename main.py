@@ -2,7 +2,7 @@ from flask import Flask, abort, render_template, redirect, url_for, flash, reque
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField,IntegerField
 from wtforms.fields.html5 import EmailField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
@@ -12,11 +12,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 from sqlalchemy.orm import relationship
 from flask_gravatar import Gravatar
-import smtplib
 import os
+import random
 
-OWN_EMAIL = "zubair1999on@gmail.com"
-OWN_PASSWORD = "humami1999"
+list_code = [8914, 6908, 7947, 1368, 3740, 6621, 7320, 9215, 7109, 9377, 6205, 8485, 5612, 7275, 2274, 7954, 7839, 7595, 6700, 6527, 3514, 6892, 7232, 8866, 2645, 2040, 5101, 6294, 5628, 7899, 1672, 7408, 3668, 1723, 7647, 8518, 3516, 4267, 9855, 6122, 4154, 6509, 5437, 1827, 2315, 6006, 3924, 9225, 9960, 4710, 9360, 9906, 6167, 7790, 9559, 1735, 5020, 8049, 7304, 6975, 8584, 3557, 8478, 6052, 8059, 6787, 7539, 5939, 5693, 5084, 9031, 9356, 6892, 2601, 3042, 3605, 5827, 3214, 3244, 6867, 3970, 9566, 1206, 4758, 6483, 6942, 9465, 6620, 6061, 1352, 4346, 7253, 3461, 4120, 3962, 4188, 3508, 1930, 6578, 4990, 5658, 6071, 9267, 1878, 2905, 9725, 7953, 8871, 4515, 3569, 2955, 3344, 5455, 1210, 2377, 4620, 8528, 4757, 2263, 1383, 5905, 6381, 5552, 6639]
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("SECRET_KEY")
@@ -39,7 +39,7 @@ login_manager.init_app(app)
 
 
 ##CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///newPosts.db")
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
@@ -98,6 +98,18 @@ class RegisterForm(FlaskForm):
 class CommentForm(FlaskForm):
     comment_box = CKEditorField("Blog Content", validators=[DataRequired()])
     submit = SubmitField('Submit Comment')
+
+class RecoveryForm(FlaskForm):
+    email = EmailField('Email', validators=[DataRequired()])
+    new_email = EmailField('New Email', validators=[DataRequired()])
+    code = IntegerField('Verification Code', validators=[DataRequired()])
+    name = StringField('New UserName', validators=[DataRequired()])
+    password = PasswordField('New Password', validators=[DataRequired()])
+    con_password = PasswordField('confirm Password', validators=[DataRequired()])
+    submit = SubmitField('Sign Up')
+
+
+
 
 # @app.before_request
 # def before_request():
@@ -217,24 +229,46 @@ def about():
     return render_template("about.html", logged_in=logged_in)
 
 
-
 @app.route("/contact", methods=["GET", "POST"])
 def contact():
-    logged_in = current_user.is_authenticated 
-    if request.method == "POST":
-        data = request.form
-        data = request.form
-        send_email(data["name"], data["email"], data["phone"], data["message"])
-        return render_template("contact.html", msg_sent=True, logged_in=logged_in)
+    logged_in = current_user.is_authenticated
     return render_template("contact.html", msg_sent=False, logged_in=logged_in)
 
 
-def send_email(name, email, phone, message):
-    email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
-    with smtplib.SMTP("smtp.gmail.com", 587) as connection:
-        connection.starttls()
-        connection.login(OWN_EMAIL, OWN_PASSWORD)
-        connection.sendmail(OWN_EMAIL, OWN_EMAIL, email_message)
+@app.route('/forget', methods=['GET', "POST"])
+def send_password():
+    form = RecoveryForm()
+    if request.method == 'POST':
+        form.validate_on_submit()
+        user_email = User.query.filter_by(email=form.email.data).first()
+        if user_email == None:
+            flash("Please check your email it is not in database!")
+            return render_template("forgetpass.html", form=form, request=False)
+        else:
+            flash(f"Please active the form to receive the verification code!")
+            flash("First enter your new user name!")
+            random_code = random.choice(list_code)
+            return render_template("forgetpass.html", form=form, email=form.email.data, request=True, random_code=random_code)
+    return render_template("forgetpass.html", form=form, request=False)
+
+@app.route("/new_password", methods=['POST', 'GET'])
+def new_password():
+    flash('Enter verification code and passcode!')
+    form = RecoveryForm()
+    if request.method == 'POST':
+        form.validate_on_submit()
+        if form.code.data not in list_code:
+            flash('Invalid code!')
+        else:
+            user_email = User.query.filter_by(email=form.email.data).first()
+            if user_email is None:
+                flash("Please enter valid Email!")
+            else:
+                user_email.email = form.new_email.data
+                user_email.password == generate_password_hash(password=form.password.data, method='pbkdf2:sha256', salt_length=8)
+                db.session.commit()
+                return redirect(url_for('login'))
+    return render_template("forgetpass.html", form=form, request=3)
 
 
 @app.route('/login', methods=['GET', 'POST'])
